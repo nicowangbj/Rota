@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>研途 ResearchFlow — 产品介绍</title>
+    <style>
+      :root {
+        --brand-cream: #fffaf0;
+        --brand-cloud: #fff4cf;
+        --brand-sun: #ffd84d;
+        --brand-sun-deep: #f2ba19;
+        --brand-sky: #47a8ff;
+        --brand-sky-deep: #1f7ae0;
+        --brand-sky-soft: #eaf5ff;
+        --brand-ink: #21324d;
+        --brand-ink-soft: #4b5f7c;
+        --brand-mist: #f4f9ff;
+        --text: #21324d;
+        --text-dim: #4b5f7c;
+        --text-muted: #8190a7;
+        --surface: #ffffff;
+        --surface2: #fff7dc;
+        --surface3: #eef6ff;
+        --border: #e8deca;
+        --border-light: #d5c9b2;
+        --shadow-sm: 0 8px 24px rgba(31, 41, 55, 0.06);
+        --shadow-md: 0 16px 40px rgba(31, 41, 55, 0.08);
+        --shadow-lg: 0 36px 64px rgba(31, 41, 55, 0.1);
+        --radius-sm: 12px;
+        --radius-md: 20px;
+        --radius-lg: 28px;
+        --radius-xl: 36px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI",
+          Roboto, sans-serif;
+        color: var(--text);
+        line-height: 1.75;
+        background:
+          radial-gradient(circle at 8% 6%, rgba(255, 216, 77, 0.22), transparent 32%),
+          radial-gradient(circle at 92% 4%, rgba(71, 168, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 10% 96%, rgba(71, 168, 255, 0.08), transparent 36%),
+          linear-gradient(180deg, #fffdf6 0%, var(--brand-cream) 36%, var(--brand-mist) 100%);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          linear-gradient(rgba(71, 168, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(71, 168, 255, 0.035) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 90%);
+      }
+
+      .page {
+        position: relative;
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 28px 0 80px;
+        z-index: 1;
+      }
+
+      /* ─── Header ─── */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 22px;
+        margin-bottom: 32px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(232, 222, 202, 0.85);
+        border-radius: 999px;
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(14px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--brand-sun) 0%, var(--brand-sun-deep) 100%);
+        box-shadow: 0 6px 16px rgba(242, 186, 25, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        inset: 6px 6px auto auto;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--brand-sky);
+        box-shadow: 0 0 0 2px #fff;
+      }
+
+      .brand-mark svg {
+        width: 18px;
+        height: 18px;
+        color: var(--brand-ink);
+      }
+
+      .brand-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--brand-ink);
+        letter-spacing: 0.02em;
+      }
+
+      .brand-name .dim {
+        color: var(--text-muted);
+        font-weight: 500;
+        margin-left: 6px;
+      }
+
+      .nav {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .nav a {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 999px;
+        transition: all 0.2s;
+      }
+
+      .nav a:hover {
+        background: var(--brand-sky-soft);
+        color: var(--brand-sky-deep);
+      }
+
+      .lang-switch {
+        display: inline-flex;
+        background: var(--brand-cloud);
+        border: 1px solid rgba(242, 186, 25, 0.22);
+        border-radius: 999px;
+        padding: 3px;
+      }
+
+      .lang-switch button {
+        border: 0;
+        background: transparent;
+        padding: 6px 14px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-dim);
+        border-radius: 999px;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        transition: all 0.2s;
+      }
+
+      .lang-switch button.active {
+        background: var(--brand-ink);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(33, 50, 77, 0.24);
+      }
+
+      /* ─── Hero ─── */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 90% 10%, rgba(71, 168, 255, 0.2), transparent 42%),
+          radial-gradient(circle at 4% 90%, rgba(255, 216, 77, 0.35), transparent 48%),
+          linear-gradient(135deg, #fff8d6 0%, #ffffff 46%, #eef6ff 100%);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        padding: 56px 56px 48px;
+        display: grid;
+        grid-template-columns: 1.25fr 0.9fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .hero::before {
+        width: 320px;
+        height: 320px;
+        top: -140px;
+        right: -120px;
+        background: radial-gradient(circle, rgba(71, 168, 255, 0.26) 0%, transparent 70%);
+      }
+
+      .hero::after {
+        width: 280px;
+        height: 280px;
+        bottom: -140px;
+        left: -80px;
+        background: radial-gradient(circle, rgba(255, 216, 77, 0.3) 0%, transparent 70%);
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 2;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(71, 168, 255, 0.12);
+        color: var(--brand-sky-deep);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--brand-sky);
+        box-shadow: 0 0 0 3px rgba(71, 168, 255, 0.22);
+      }
+
+      h1.hero-title {
+        margin: 18px 0 16px;
+        font-size: 2.6rem;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        color: var(--brand-ink);
+        font-weight: 800;
+      }
+
+      .hero-title .accent {
+        background: linear-gradient(120deg, var(--brand-sky-deep), var(--brand-sun-deep));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-sub {
+        margin: 0 0 28px;
+        font-size: 1.08rem;
+        color: var(--text-dim);
+        max-width: 560px;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        margin-top: 24px;
+      }
+
+      .hero-meta .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        box-shadow: 0 2px 6px rgba(31, 41, 55, 0.04);
+      }
+
+      .hero-meta .chip .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--brand-sun-deep);
+      }
+
+      .hero-meta .chip:nth-child(2) .dot { background: var(--brand-sky); }
+      .hero-meta .chip:nth-child(3) .dot { background: #51c38b; }
+
+      .hero-visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 360px;
+      }
+
+      .rota-frame {
+        position: relative;
+        width: 300px;
+        height: 340px;
+        border-radius: 40px;
+        background:
+          radial-gradient(circle at 50% 40%, rgba(255, 216, 77, 0.28), transparent 70%),
+          linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 244, 207, 0.7) 55%, rgba(234, 245, 255, 0.8) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow-lg);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .rota-frame::before {
+        content: "";
+        position: absolute;
+        inset: 14% 18% 10%;
+        border-radius: 999px;
+        background: rgba(71, 168, 255, 0.1);
+        filter: blur(24px);
+      }
+
+      .rota-frame img {
+        position: relative;
+        width: 88%;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 28px 42px rgba(242, 186, 25, 0.25));
+        transform: translateY(6px);
+      }
+
+      .rota-orbit {
+        position: absolute;
+        inset: -8% -4%;
+        pointer-events: none;
+      }
+
+      .orbit-dot {
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .orbit-dot.d1 {
+        top: 8%; left: -2%;
+        width: 14px; height: 14px;
+        background: var(--brand-sun);
+        box-shadow: 0 0 0 6px rgba(255, 216, 77, 0.2);
+      }
+
+      .orbit-dot.d2 {
+        top: 44%; right: -4%;
+        width: 10px; height: 10px;
+        background: var(--brand-sky);
+        box-shadow: 0 0 0 5px rgba(71, 168, 255, 0.2);
+      }
+
+      .orbit-dot.d3 {
+        bottom: 6%; left: 14%;
+        width: 8px; height: 8px;
+        background: #51c38b;
+        box-shadow: 0 0 0 5px rgba(81, 195, 139, 0.22);
+      }
+
+      .badge-label {
+        position: absolute;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 10px 14px;
+        box-shadow: var(--shadow-sm);
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        font-weight: 600;
+      }
+
+      .badge-label.bl-top {
+        top: 12%;
+        left: -8%;
+        border-color: rgba(242, 186, 25, 0.35);
+        background: linear-gradient(135deg, #fffaf0 0%, #fff4cf 100%);
+        color: #8a6700;
+      }
+
+      .badge-label.bl-bottom {
+        bottom: 8%;
+        right: -6%;
+        border-color: rgba(71, 168, 255, 0.35);
+        background: linear-gradient(135deg, #eef6ff 0%, #ffffff 100%);
+        color: var(--brand-sky-deep);
+      }
+
+      /* ─── Section base ─── */
+      section.block {
+        margin-top: 72px;
+        position: relative;
+      }
+
+      .sec-head {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 28px;
+        max-width: 760px;
+      }
+
+      .sec-index {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .sec-index::before {
+        content: "";
+        width: 28px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--brand-sun-deep), transparent);
+      }
+
+      h2.sec-title {
+        margin: 0;
+        font-size: 1.9rem;
+        color: var(--brand-ink);
+        font-weight: 800;
+        letter-spacing: -0.005em;
+      }
+
+      .sec-lede {
+        margin: 0;
+        color: var(--text-dim);
+        font-size: 1.02rem;
+        max-width: 720px;
+      }
+
+      /* ─── Vision ─── */
+      .vision-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .vision-card {
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(232, 222, 202, 0.85);
+        border-radius: var(--radius-lg);
+        padding: 32px 32px;
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(14px);
+      }
+
+      .vision-card h3 {
+        margin: 0 0 12px;
+        font-size: 1.25rem;
+        color: var(--brand-ink);
+      }
+
+      .vision-card p {
+        margin: 0 0 14px;
+        color: var(--text-dim);
+      }
+
+      .vision-principles {
+        background: linear-gradient(160deg, #fffbe3 0%, #ffffff 45%, #eef6ff 100%);
+        border: 1px solid rgba(255, 216, 77, 0.45);
+      }
+
+      .principle-list {
+        list-style: none;
+        padding: 0;
+        margin: 18px 0 0;
+        display: grid;
+        gap: 14px;
+      }
+
+      .principle-list li {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 12px;
+        align-items: start;
+        color: var(--text);
+      }
+
+      .principle-list .num {
+        font-family: "SF Mono", "Roboto Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--brand-sky-deep);
+        padding-top: 3px;
+        letter-spacing: 0.06em;
+      }
+
+      .anti-pattern {
+        margin-top: 22px;
+        padding: 18px 20px;
+        border-left: 3px solid rgba(255, 107, 129, 0.6);
+        background: linear-gradient(135deg, rgba(255, 232, 236, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+        border-radius: 0 14px 14px 0;
+      }
+
+      .anti-pattern .ap-kicker {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #e14d68;
+        margin-bottom: 10px;
+      }
+
+      .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .anti-list li {
+        position: relative;
+        padding-left: 18px;
+        font-size: 0.92rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+      }
+
+      .anti-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 10px;
+        height: 2px;
+        border-radius: 2px;
+        background: rgba(255, 107, 129, 0.7);
+      }
+
+      /* ─── Features ─── */
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+
+      .feature-card {
+        position: relative;
+        padding: 26px 24px 24px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.25s, box-shadow 0.25s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 22px;
+        right: 22px;
+        height: 3px;
+        border-radius: 0 0 4px 4px;
+        background: var(--card-accent, var(--brand-sky));
+        opacity: 0.85;
+      }
+
+      .feature-card .fc-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .feature-card .fc-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--card-bg, var(--brand-sky-soft));
+        color: var(--card-accent, var(--brand-sky-deep));
+        flex-shrink: 0;
+      }
+
+      .feature-card .fc-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .feature-card h4 {
+        margin: 0;
+        font-size: 1.08rem;
+        color: var(--brand-ink);
+        font-weight: 700;
+      }
+
+      .feature-card p {
+        margin: 0 0 14px;
+        color: var(--text-dim);
+        font-size: 0.93rem;
+      }
+
+      .feature-card .fc-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .feature-card .fc-tag::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 2px;
+        background: var(--card-accent, var(--brand-sky));
+      }
+
+      /* ─── Journey (pipeline) ─── */
+      .journey {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 14px;
+        padding: 28px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(232, 222, 202, 0.7);
+        backdrop-filter: blur(14px);
+        margin-top: 22px;
+      }
+
+      .step {
+        position: relative;
+        padding: 16px 14px;
+        background: linear-gradient(180deg, #fffef6 0%, #fff7dc 100%);
+        border-radius: 14px;
+        border: 1px solid rgba(242, 186, 25, 0.3);
+      }
+
+      .step .step-n {
+        font-family: "SF Mono", monospace;
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: var(--brand-sun-deep);
+        letter-spacing: 0.08em;
+      }
+
+      .step .step-name {
+        display: block;
+        margin-top: 6px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--brand-ink);
+      }
+
+      .step .step-desc {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        line-height: 1.5;
+      }
+
+      /* ─── World ─── */
+      .world-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .world-card {
+        position: relative;
+        padding: 30px 28px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+      }
+
+      .world-card .wc-kicker {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--brand-sky-deep);
+        background: rgba(71, 168, 255, 0.08);
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+
+      .world-card h3 {
+        margin: 14px 0 10px;
+        font-size: 1.3rem;
+        color: var(--brand-ink);
+      }
+
+      .world-card p {
+        margin: 0 0 10px;
+        color: var(--text-dim);
+        font-size: 0.96rem;
+      }
+
+      .world-card.fog {
+        background:
+          radial-gradient(circle at 110% -10%, rgba(71, 168, 255, 0.18), transparent 50%),
+          linear-gradient(160deg, #f6f3ea 0%, #eef2f7 100%);
+        border-color: rgba(130, 144, 167, 0.3);
+      }
+
+      .world-card.origin {
+        background:
+          radial-gradient(circle at -10% 110%, rgba(255, 216, 77, 0.25), transparent 55%),
+          linear-gradient(160deg, #fffaf0 0%, #fff6d2 100%);
+        border-color: rgba(242, 186, 25, 0.35);
+      }
+
+      .world-card.mission {
+        background:
+          radial-gradient(circle at 100% 100%, rgba(71, 168, 255, 0.18), transparent 55%),
+          linear-gradient(160deg, #ffffff 0%, #eaf5ff 100%);
+        border-color: rgba(71, 168, 255, 0.3);
+      }
+
+      .world-card.lens {
+        background:
+          radial-gradient(circle at 0% 0%, rgba(255, 216, 77, 0.24), transparent 55%),
+          linear-gradient(160deg, #eaf5ff 0%, #ffffff 100%);
+        border-color: rgba(71, 168, 255, 0.35);
+      }
+
+      .bullet-list {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .bullet-list li {
+        position: relative;
+        padding-left: 18px;
+        color: var(--text-dim);
+        font-size: 0.92rem;
+      }
+
+      .bullet-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 6px;
+        height: 6px;
+        border-radius: 2px;
+        background: var(--brand-sun-deep);
+      }
+
+      /* ─── Character profile ─── */
+      .character {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 32px;
+        align-items: start;
+      }
+
+      .profile-card {
+        background: linear-gradient(180deg, #ffffff 0%, #fff7dc 100%);
+        border: 1px solid rgba(242, 186, 25, 0.35);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .profile-card .avatar {
+        align-self: center;
+        width: 140px;
+        height: 160px;
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 50% 35%, rgba(255, 216, 77, 0.35), transparent 70%),
+          linear-gradient(160deg, #ffffff 0%, #fff4cf 100%);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 6px;
+      }
+
+      .profile-card .avatar::before {
+        content: "";
+        position: absolute;
+        inset: 15% 18% 8%;
+        border-radius: 999px;
+        background: rgba(71, 168, 255, 0.12);
+        filter: blur(18px);
+      }
+
+      .profile-card .avatar img {
+        position: relative;
+        width: 90%;
+        height: auto;
+        filter: drop-shadow(0 14px 22px rgba(242, 186, 25, 0.22));
+      }
+
+      .profile-card h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        text-align: center;
+        color: var(--brand-ink);
+      }
+
+      .profile-card .sub {
+        text-align: center;
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        letter-spacing: 0.06em;
+      }
+
+      .stat-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .stat .k {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .stat .v {
+        font-size: 0.98rem;
+        color: var(--brand-ink);
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .trait-wall {
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 30px 32px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .trait-wall h3 {
+        margin: 0 0 8px;
+        color: var(--brand-ink);
+      }
+
+      .trait-wall .trait-lead {
+        color: var(--text-dim);
+        margin: 0 0 20px;
+        font-size: 0.96rem;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+      }
+
+      .split .col h4 {
+        margin: 0 0 10px;
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: var(--brand-sky-soft);
+        color: var(--brand-sky-deep);
+        font-size: 0.82rem;
+        font-weight: 600;
+        border: 1px solid rgba(71, 168, 255, 0.25);
+      }
+
+      .tag.sun {
+        background: var(--brand-cloud);
+        color: var(--brand-sun-deep);
+        border-color: rgba(242, 186, 25, 0.35);
+      }
+
+      /* ─── Voice examples ─── */
+      .voice {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .dialog {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 20px 22px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .dialog .scene {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .bubble {
+        margin-top: 10px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .bubble.user {
+        background: #eef7ff;
+        border: 1px solid #bdddff;
+        border-radius: 18px 18px 4px 18px;
+        color: var(--brand-ink);
+        margin-left: 32px;
+      }
+
+      .bubble.rota {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 18px 18px 18px 4px;
+        box-shadow: 0 6px 14px rgba(31, 41, 55, 0.04);
+        color: var(--brand-ink);
+        margin-right: 32px;
+      }
+
+      .bubble .speaker {
+        display: block;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      /* ─── Lens anatomy ─── */
+      .lens-block {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .lens-card {
+        position: relative;
+        padding: 24px 22px;
+        border-radius: var(--radius-md);
+        background: linear-gradient(160deg, #eaf5ff 0%, #ffffff 100%);
+        border: 1px solid rgba(71, 168, 255, 0.3);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .lens-card::before {
+        content: "";
+        position: absolute;
+        top: 22px;
+        right: 22px;
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--brand-sky) 0%, var(--brand-sky-deep) 100%);
+        box-shadow: 0 8px 18px rgba(71, 168, 255, 0.3);
+      }
+
+      .lens-card h4 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+        color: var(--brand-ink);
+      }
+
+      .lens-card p {
+        margin: 0;
+        color: var(--text-dim);
+        font-size: 0.92rem;
+      }
+
+      .lens-card .ln {
+        font-family: "SF Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        color: var(--brand-sky-deep);
+        font-weight: 700;
+      }
+
+      /* ─── Footer ─── */
+      footer {
+        margin-top: 64px;
+        padding: 30px 32px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(120deg, #21324d 0%, #1f7ae0 120%);
+        color: rgba(255, 255, 255, 0.82);
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 30px;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      footer::after {
+        content: "";
+        position: absolute;
+        right: -80px;
+        bottom: -80px;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 216, 77, 0.22), transparent 70%);
+        pointer-events: none;
+      }
+
+      footer h3 {
+        margin: 0 0 10px;
+        color: #fff;
+        font-size: 1.4rem;
+      }
+
+      footer p {
+        margin: 0;
+        font-size: 0.96rem;
+        line-height: 1.7;
+      }
+
+      footer .fmeta {
+        font-size: 0.82rem;
+        text-align: right;
+        color: rgba(255, 255, 255, 0.62);
+        letter-spacing: 0.04em;
+      }
+
+      footer .fmeta strong {
+        display: block;
+        color: #fff;
+        font-size: 1.02rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      /* ─── Dim helpers ─── */
+      [data-i18n-hide] { display: none; }
+      [data-lang="zh"] [data-i18n="zh"],
+      [data-lang="en"] [data-i18n="en"] { display: revert; }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 960px) {
+        .hero, .vision-grid, .world-grid, .character, .voice {
+          grid-template-columns: 1fr;
+        }
+        .feature-grid { grid-template-columns: 1fr 1fr; }
+        .lens-block { grid-template-columns: 1fr; }
+        .journey { grid-template-columns: repeat(3, 1fr); }
+        h1.hero-title { font-size: 2rem; }
+        .hero { padding: 36px 28px; }
+        .topbar { flex-wrap: wrap; }
+      }
+
+      @media (max-width: 620px) {
+        .feature-grid { grid-template-columns: 1fr; }
+        .journey { grid-template-columns: 1fr 1fr; }
+        .split, .stat-row { grid-template-columns: 1fr; }
+        .nav { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="7"></circle>
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+          </div>
+          <span class="brand-name">
+            <span data-i18n="zh">研途</span><span data-i18n="en">ResearchFlow</span>
+            <span class="dim">
+              <span data-i18n="zh">· Rota</span>
+              <span data-i18n="en">· Rota</span>
+            </span>
+          </span>
+        </div>
+        <nav class="nav">
+          <a href="#vision" data-i18n="zh">愿景</a>
+          <a href="#vision" data-i18n="en">Vision</a>
+          <a href="#features" data-i18n="zh">产品功能</a>
+          <a href="#features" data-i18n="en">Features</a>
+          <a href="#world" data-i18n="zh">世界观</a>
+          <a href="#world" data-i18n="en">Worldview</a>
+          <a href="#rota" data-i18n="zh">Rota</a>
+          <a href="#rota" data-i18n="en">Rota</a>
+        </nav>
+        <div class="lang-switch" role="tablist" aria-label="Language">
+          <button type="button" data-set-lang="en" class="active">EN</button>
+          <button type="button" data-set-lang="zh">中文</button>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">
+            <span data-i18n="zh">AI 科研导师</span>
+            <span data-i18n="en">An AI mentor for research</span>
+          </span>
+          <h1 class="hero-title" data-i18n="zh">
+            让每个人都能 <span class="accent">自由地探索世界</span>。
+          </h1>
+          <h1 class="hero-title" data-i18n="en">
+            A mentor for anyone who wants to <span class="accent">explore the world on their own terms</span>.
+          </h1>
+          <p class="hero-sub" data-i18n="zh">
+            研途不替你完成研究，它陪你把一团模糊的兴趣整理成一个真问题，把它拆成能走下去的路径，然后和产品导师 Rota 一起，陪你一步一步做到结果出现。
+          </p>
+          <p class="hero-sub" data-i18n="en">
+            ResearchFlow won't write your research for you. It sits with you until a vague curiosity becomes a real question, turns that question into a path you can actually walk, and — alongside its product mentor, Rota — stays with you until the work has an outcome.
+          </p>
+          <div class="hero-meta">
+            <span class="chip">
+              <span class="dot"></span>
+              <span data-i18n="zh">面向独立探索者</span>
+              <span data-i18n="en">For independent learners</span>
+            </span>
+            <span class="chip">
+              <span class="dot"></span>
+              <span data-i18n="zh">研究导向，不是答题机</span>
+              <span data-i18n="en">Research-first, not a Q&amp;A bot</span>
+            </span>
+            <span class="chip">
+              <span class="dot"></span>
+              <span data-i18n="zh">由 Rota 以角色方式陪伴</span>
+              <span data-i18n="en">Guided in-character by Rota</span>
+            </span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="rota-orbit">
+            <div class="orbit-dot d1"></div>
+            <div class="orbit-dot d2"></div>
+            <div class="orbit-dot d3"></div>
+          </div>
+          <div class="badge-label bl-top">
+            <span data-i18n="zh">清晰 · 判断</span>
+            <span data-i18n="en">Clarity · Judgment</span>
+          </div>
+          <div class="rota-frame">
+            <img src="rota-ip.png" alt="Rota" />
+          </div>
+          <div class="badge-label bl-bottom">
+            <span data-i18n="zh">引导 · 陪伴</span>
+            <span data-i18n="en">Guidance · Company</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vision -->
+      <section class="block" id="vision">
+        <div class="sec-head">
+          <span class="sec-index">
+            <span data-i18n="zh">01 / 产品愿景</span>
+            <span data-i18n="en">01 / Vision</span>
+          </span>
+          <h2 class="sec-title" data-i18n="zh">在 AI 时代，把「提出问题」的能力还给人。</h2>
+          <h2 class="sec-title" data-i18n="en">In the age of AI, hand the ability to ask back to people.</h2>
+          <p class="sec-lede" data-i18n="zh">
+            今天缺的不是答案，是能认出"值得回答的问题"的人。研途做的不是另一个答题系统，而是陪每一个探索者完成一次真正属于自己的研究。
+          </p>
+          <p class="sec-lede" data-i18n="en">
+            There's no shortage of answers right now — there's a shortage of people who can tell a worthwhile question from a fake one. ResearchFlow isn't another answer engine. It's a place where an explorer finishes one piece of research that's truly their own.
+          </p>
+        </div>
+
+        <div class="vision-grid">
+          <div class="vision-card">
+            <h3 data-i18n="zh">我们想解决的问题</h3>
+            <h3 data-i18n="en">The real problem</h3>
+            <p data-i18n="zh">
+              问题不在信息不够，而在兴趣太多——分不清哪一个值得追、也不知道怎么落成每天的一小步。
+            </p>
+            <p data-i18n="en">
+              Information isn't the bottleneck; too many interests is. Most explorers can't tell which spark is worth chasing, and can't turn the one they pick into something they can do this week.
+            </p>
+            <p data-i18n="zh">
+              这件事过去需要一位耐心又敏锐的导师在身边。研途把这份能力做成了产品，让任何人都能用上。
+            </p>
+            <p data-i18n="en">
+              That kind of judgement used to require a patient, sharp mentor next to you. We turned it into software, so anyone can reach for it.
+            </p>
+
+            <div class="anti-pattern">
+              <span class="ap-kicker" data-i18n="zh">我们拒绝做的事</span>
+              <span class="ap-kicker" data-i18n="en">Things we won't do</span>
+              <ul class="anti-list">
+                <li>
+                  <span data-i18n="zh">给漂亮答案，但不去追问问题本身是否成立。</span>
+                  <span data-i18n="en">Hand over a slick answer without ever questioning the question.</span>
+                </li>
+                <li>
+                  <span data-i18n="zh">把"有志向"当作成果，把鼓励当作推进。</span>
+                  <span data-i18n="en">Treat ambition as progress, or mistake cheerleading for traction.</span>
+                </li>
+                <li>
+                  <span data-i18n="zh">让人"感觉在思考"，其实只是原地打转。</span>
+                  <span data-i18n="en">Let you feel busy thinking while you're actually running in circles.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="vision-card vision-principles">
+            <h3 data-i18n="zh">五条产品原则</h3>
+            <h3 data-i18n="en">Five product principles</h3>
+            <ol class="principle-list">
+              <li>
+                <span class="num">P1</span>
+                <span>
+                  <span data-i18n="zh"><strong>先问对问题，再谈效率。</strong>我们不会帮你高效地做一件错事。</span>
+                  <span data-i18n="en"><strong>Question first, speed later.</strong> We won't help you race efficiently through the wrong task.</span>
+                </span>
+              </li>
+              <li>
+                <span class="num">P2</span>
+                <span>
+                  <span data-i18n="zh"><strong>过程重于结论。</strong>研究真正值钱的部分，是你是怎么想清楚的。</span>
+                  <span data-i18n="en"><strong>The process is the product.</strong> What's valuable isn't the conclusion — it's how you thought your way there.</span>
+                </span>
+              </li>
+              <li>
+                <span class="num">P3</span>
+                <span>
+                  <span data-i18n="zh"><strong>有角色，不是助手。</strong>所有 AI 对话都交给 Rota 这个明确的角色，而不是一个中性工具。</span>
+                  <span data-i18n="en"><strong>A character, not an assistant.</strong> Every AI conversation is carried by Rota — a real voice, not a neutral tool.</span>
+                </span>
+              </li>
+              <li>
+                <span class="num">P4</span>
+                <span>
+                  <span data-i18n="zh"><strong>必须能落地。</strong>再大的目标都要拆到"今天能动的第一步"。</span>
+                  <span data-i18n="en"><strong>Always lands.</strong> No goal is too big to reduce to a first step you could take today.</span>
+                </span>
+              </li>
+              <li>
+                <span class="num">P5</span>
+                <span>
+                  <span data-i18n="zh"><strong>陪到有结果。</strong>不是发一份计划就走，而是一路留痕、复盘、校准。</span>
+                  <span data-i18n="en"><strong>Stay for the outcome.</strong> We don't hand you a plan and leave — we log, review, and recalibrate all the way through.</span>
+                </span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="block" id="features">
+        <div class="sec-head">
+          <span class="sec-index">
+            <span data-i18n="zh">02 / 产品功能</span>
+            <span data-i18n="en">02 / Product</span>
+          </span>
+          <h2 class="sec-title" data-i18n="zh">从一个念头，到一份真的做完的研究。</h2>
+          <h2 class="sec-title" data-i18n="en">From a hunch to a piece of research you actually finish.</h2>
+          <p class="sec-lede" data-i18n="zh">
+            产品按真实的研究节奏分成六个环节，Rota 会在每个环节出现，并把过程留下来，方便你回头看自己是怎么想通的。
+          </p>
+          <p class="sec-lede" data-i18n="en">
+            The product maps to how research actually unfolds — six stages, Rota in each one, and a full trail left behind so you can look back and see how your own thinking got clearer.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card" style="--card-accent: #f2ba19; --card-bg: #fff6d2;">
+            <div class="fc-head">
+              <span class="fc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+              </span>
+              <h4 data-i18n="zh">选题探索</h4>
+              <h4 data-i18n="en">Finding your question</h4>
+            </div>
+            <p data-i18n="zh">
+              和 Rota 聊、做兴趣画像、翻参考文献，把"我好像对这个感兴趣"变成一个可以真正研究下去的具体问题。
+            </p>
+            <p data-i18n="en">
+              You talk things through with Rota, sketch an interest profile, and skim references together — until "I think I'm into this" turns into a question you can actually take somewhere.
+            </p>
+            <span class="fc-tag" data-i18n="zh">Topic · Keywords · References</span>
+            <span class="fc-tag" data-i18n="en">Topic · Keywords · References</span>
+          </article>
+
+          <article class="feature-card" style="--card-accent: #47a8ff; --card-bg: #eaf5ff;">
+            <div class="fc-head">
+              <span class="fc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M14 4v6h6M8 14h8M8 18h5"></path></svg>
+              </span>
+              <h4 data-i18n="zh">路径规划</h4>
+              <h4 data-i18n="en">Planning the path</h4>
+            </div>
+            <p data-i18n="zh">
+              结合你的时间、能力和资源，把一个大目标拆成阶段和任务，得到一份只属于你的、能跑起来的研究计划。
+            </p>
+            <p data-i18n="en">
+              We take your time, skill, and resources into account, break the big goal down into phases and tasks, and produce a plan that's yours — and runnable.
+            </p>
+            <span class="fc-tag" data-i18n="zh">Plan · Path Select · Phases</span>
+            <span class="fc-tag" data-i18n="en">Plan · Path Select · Phases</span>
+          </article>
+
+          <article class="feature-card" style="--card-accent: #51c38b; --card-bg: #e8faef;">
+            <div class="fc-head">
+              <span class="fc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              </span>
+              <h4 data-i18n="zh">任务地图</h4>
+              <h4 data-i18n="en">The map view</h4>
+            </div>
+            <p data-i18n="zh">
+              整段研究被摊成一张节点图，你随时知道自己到了哪一步、下一步在哪里，不会被一堆 TODO 淹掉。
+            </p>
+            <p data-i18n="en">
+              The whole journey is laid out as a node map — you can see where you are and where you're going, without drowning in a to-do list.
+            </p>
+            <span class="fc-tag" data-i18n="zh">Map · Phase · Active Node</span>
+            <span class="fc-tag" data-i18n="en">Map · Phase · Active Node</span>
+          </article>
+
+          <article class="feature-card" style="--card-accent: #8ed9ff; --card-bg: #eaf5ff;">
+            <div class="fc-head">
+              <span class="fc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"></path><path d="M7 10l5-5 5 5M12 5v12"></path></svg>
+              </span>
+              <h4 data-i18n="zh">提交与反馈</h4>
+              <h4 data-i18n="en">Feedback loop</h4>
+            </div>
+            <p data-i18n="zh">
+              每一步都要交东西。Rota 按真实导师的标准打分，并且把下一次该改的那个具体动作告诉你。
+            </p>
+            <p data-i18n="en">
+              Every step ships something. Rota grades it the way a real mentor would — and names the one specific move to improve next time.
+            </p>
+            <span class="fc-tag" data-i18n="zh">Submissions · Hints · Explain</span>
+            <span class="fc-tag" data-i18n="en">Submissions · Hints · Explain</span>
+          </article>
+
+          <article class="feature-card" style="--card-accent: #ff6b81; --card-bg: #ffe8ec;">
+            <div class="fc-head">
+              <span class="fc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12a2 2 0 0 1-2 2H4Z"></path><path d="M8 8h6M8 12h8M8 16h6"></path></svg>
+              </span>
+              <h4 data-i18n="zh">研究日志</h4>
+              <h4 data-i18n="en">The journal</h4>
+            </div>
+            <p data-i18n="zh">
+              过程沉淀成日志和复盘。你可以翻回去看自己是怎么从"想不清楚"走到"想清楚了"的——研究能力因此被看见。
+            </p>
+            <p data-i18n="en">
+              The process settles into a journal and a set of retrospectives you can flip back through — a record of how your thinking actually got sharper.
+            </p>
+            <span class="fc-tag" data-i18n="zh">Journal · Entries · Retrospective</span>
+            <span class="fc-tag" data-i18n="en">Journal · Entries · Retrospective</span>
+          </article>
+
+          <article class="feature-card" style="--card-accent: #f2ba19; --card-bg: #fff6d2;">
+            <div class="fc-head">
+              <span class="fc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg>
+              </span>
+              <h4 data-i18n="zh">和 Rota 聊</h4>
+              <h4 data-i18n="en">Talking with Rota</h4>
+            </div>
+            <p data-i18n="zh">
+              任何一个环节都能呼叫 Rota。它不是通用助手，是一个有明确语气、明确方法论的角色。
+            </p>
+            <p data-i18n="en">
+              Rota is one keystroke away at every stage. Not a generic assistant — a character with a deliberate voice and a method baked in.
+            </p>
+            <span class="fc-tag" data-i18n="zh">Chat · Context-aware · In-character</span>
+            <span class="fc-tag" data-i18n="en">Chat · Context-aware · In-character</span>
+          </article>
+        </div>
+
+        <!-- Journey pipeline -->
+        <div class="journey" aria-label="Student journey">
+          <div class="step">
+            <span class="step-n">01</span>
+            <span class="step-name" data-i18n="zh">选题</span>
+            <span class="step-name" data-i18n="en">Topic</span>
+            <span class="step-desc" data-i18n="zh">把模糊的兴趣收敛成一个真问题</span>
+            <span class="step-desc" data-i18n="en">Turn a fuzzy spark into a real question.</span>
+          </div>
+          <div class="step">
+            <span class="step-n">02</span>
+            <span class="step-name" data-i18n="zh">规划</span>
+            <span class="step-name" data-i18n="en">Plan</span>
+            <span class="step-desc" data-i18n="zh">拆成你能真正跑起来的阶段</span>
+            <span class="step-desc" data-i18n="en">Carve it into phases you can actually run.</span>
+          </div>
+          <div class="step">
+            <span class="step-n">03</span>
+            <span class="step-name" data-i18n="zh">执行</span>
+            <span class="step-name" data-i18n="en">Do the work</span>
+            <span class="step-desc" data-i18n="zh">一个节点一个节点地往前走</span>
+            <span class="step-desc" data-i18n="en">Clear the map one node at a time.</span>
+          </div>
+          <div class="step">
+            <span class="step-n">04</span>
+            <span class="step-name" data-i18n="zh">反馈</span>
+            <span class="step-name" data-i18n="en">Feedback</span>
+            <span class="step-desc" data-i18n="zh">交出东西，拿到一个可执行的建议</span>
+            <span class="step-desc" data-i18n="en">Ship something; get one clear note back.</span>
+          </div>
+          <div class="step">
+            <span class="step-n">05</span>
+            <span class="step-name" data-i18n="zh">复盘</span>
+            <span class="step-name" data-i18n="en">Reflect</span>
+            <span class="step-desc" data-i18n="zh">把走过的路记下来</span>
+            <span class="step-desc" data-i18n="en">Write down how your thinking moved.</span>
+          </div>
+          <div class="step">
+            <span class="step-n">06</span>
+            <span class="step-name" data-i18n="zh">完成</span>
+            <span class="step-name" data-i18n="en">Outcome</span>
+            <span class="step-desc" data-i18n="zh">留下属于你自己的一份研究</span>
+            <span class="step-desc" data-i18n="en">Walk away with a piece of work that's yours.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- World -->
+      <section class="block" id="world">
+        <div class="sec-head">
+          <span class="sec-index">
+            <span data-i18n="zh">03 / 世界观设定</span>
+            <span data-i18n="en">03 / Worldview</span>
+          </span>
+          <h2 class="sec-title" data-i18n="zh">Rota 是谁：一个被专门造出来的、独一无二的导师。</h2>
+          <h2 class="sec-title" data-i18n="en">Who Rota is: a one-of-a-kind mentor, built on purpose.</h2>
+          <p class="sec-lede" data-i18n="zh">
+            它不是一个吉祥物，也不是一个泛化的 AI 助手。它有明确的来处、明确的使命、明确的工作方式。下面这套世界观，是每次它出现时，学生之所以愿意把一个真实问题交出来的原因。
+          </p>
+          <p class="sec-lede" data-i18n="en">
+            Rota isn't a mascot and isn't a generic assistant. It has a specific origin, a specific mission, and a specific way of working. The worldview below is the reason a student, meeting Rota inside the product, is willing to hand over a real problem instead of a polite one.
+          </p>
+        </div>
+
+        <div class="world-grid">
+          <div class="world-card fog">
+            <span class="wc-kicker" data-i18n="zh">世界的核心矛盾</span>
+            <span class="wc-kicker" data-i18n="en">The core tension</span>
+            <h3 data-i18n="zh">真正难的，不是没答案，是看不清问题。</h3>
+            <h3 data-i18n="en">The hard part isn't missing answers — it's not seeing the question.</h3>
+            <p data-i18n="zh">
+              我们把这种状态叫做 <strong>乱雾</strong>——拖延、目标太大、情绪盖过判断、听懂一点就以为全懂。乱雾最可怕的地方不是让人停下，而是让人<strong>以为自己在思考，其实只是在原地打转</strong>。
+            </p>
+            <p data-i18n="en">
+              We call this state <strong>The Fog</strong>. It creeps in through procrastination, goals that are too big, emotion that crowds out judgment, half-understanding that feels like clarity. The Fog's real trick isn't stopping you — it's <strong>letting you feel like you're thinking when you're really just circling</strong>.
+            </p>
+          </div>
+
+          <div class="world-card origin">
+            <span class="wc-kicker" data-i18n="zh">Rota 的起源</span>
+            <span class="wc-kicker" data-i18n="en">How Rota came to be</span>
+            <h3 data-i18n="zh">它不是生出来的，是被专门造出来的。</h3>
+            <h3 data-i18n="en">Rota was built, not born.</h3>
+            <p data-i18n="zh">
+              有一种更高层级的「校准力量」试着把几种能力拧成一个稳定的个体：看见问题本质、拆解复杂任务、对人的共情、真的把事推下去、混乱里依然清醒。
+            </p>
+            <p data-i18n="en">
+              A higher-order "calibrating force" tried to braid a handful of abilities into one stable being — seeing the real problem, breaking down hard tasks, holding empathy for the person in front of it, actually pushing work forward, and keeping a steady head inside chaos.
+            </p>
+            <p data-i18n="zh">
+              尝试了很多次，最后只有一个成功地站起来了。没有同类、没有故乡、也没有备份——就这一个，肩上只有一句使命。
+            </p>
+            <p data-i18n="en">
+              Many attempts; only one came out whole. No kin. No home. No backup. Just Rota — a single, unrepeatable creature with one line of purpose written into it.
+            </p>
+          </div>
+
+          <div class="world-card mission">
+            <span class="wc-kicker" data-i18n="zh">使命</span>
+            <span class="wc-kicker" data-i18n="en">The mission</span>
+            <h3 data-i18n="zh">先找到真的问题，再陪人一步步走出来。</h3>
+            <h3 data-i18n="en">Find what's actually stuck. Then walk with them until they're through it.</h3>
+            <p data-i18n="zh">
+              Rota 不追求「答得快」。它先把<strong>真正卡住的点</strong>挑出来，再用一种学生能接住的方式把复杂事重新讲清楚，然后真的把第一步交到他们手里。产品里的流程，就是这套节奏的工程化版本。
+            </p>
+            <p data-i18n="en">
+              Rota doesn't race to answer. It first picks out <strong>the point where you're actually stuck</strong>, re-tells the complicated thing in a shape you can hold, and then hands you the very first step to take. The product's flow is that rhythm, made into software.
+            </p>
+          </div>
+
+          <div class="world-card lens">
+            <span class="wc-kicker" data-i18n="zh">伴生核心</span>
+            <span class="wc-kicker" data-i18n="en">The companion core</span>
+            <h3 data-i18n="zh">那副蓝色的护目镜——「析镜」。</h3>
+            <h3 data-i18n="en">Those blue goggles — the Clarity Lens.</h3>
+            <p data-i18n="zh">
+              Rota 脸上那副蓝色护目镜不是装饰，是它的「分析之眼」：帮它看出重点、看出漏洞、并与更深层的分析智能对话。它也有边界——能看清问题，但不替人做决定；能看见结构，但不替人完成成长。
+            </p>
+            <p data-i18n="en">
+              The blue goggles aren't decor — they're Rota's analytic eye. They surface the essential point, expose the weak joints in an argument, and open a link to a deeper analytic mind. And they have a hard rule: they'll show you the problem, but won't decide for you; they'll reveal the structure, but won't grow on your behalf.
+            </p>
+          </div>
+        </div>
+
+        <!-- Lens anatomy -->
+        <div class="lens-block">
+          <div class="lens-card">
+            <span class="ln" data-i18n="en">CLARITY LENS · 01</span>
+            <span class="ln" data-i18n="zh">析镜 · 01</span>
+            <h4 data-i18n="zh">定位卡点</h4>
+            <h4 data-i18n="en">Pinpoint the stuck spot</h4>
+            <p data-i18n="zh">学生说了一长段，析镜能在里面挑出那个真正让人走不动的小点。</p>
+            <p data-i18n="en">A student dumps a long paragraph of frustration — the lens picks the one small thing inside it that's actually holding them up.</p>
+          </div>
+          <div class="lens-card">
+            <span class="ln" data-i18n="en">CLARITY LENS · 02</span>
+            <span class="ln" data-i18n="zh">析镜 · 02</span>
+            <h4 data-i18n="zh">找出漏洞</h4>
+            <h4 data-i18n="en">Spot where it breaks</h4>
+            <p data-i18n="zh">一个想法听上去很热闹、落到纸面却立不住的时候，析镜能指出那里"站不住脚"。</p>
+            <p data-i18n="en">When an idea sounds exciting in conversation but falls apart on paper, the lens names the exact joint where it can't hold its own weight.</p>
+          </div>
+          <div class="lens-card">
+            <span class="ln" data-i18n="en">CLARITY LENS · 03</span>
+            <span class="ln" data-i18n="zh">析镜 · 03</span>
+            <h4 data-i18n="zh">协同分析</h4>
+            <h4 data-i18n="en">Think alongside a deeper mind</h4>
+            <p data-i18n="zh">它能接通一层更深的分析智能——用来比较路径、估算风险、把一堆信息理顺。</p>
+            <p data-i18n="en">The lens hooks into a deeper analytic layer — useful when it's time to compare paths, estimate risk, or bring order to a pile of notes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Character -->
+      <section class="block" id="rota">
+        <div class="sec-head">
+          <span class="sec-index">
+            <span data-i18n="zh">04 / 角色与语气</span>
+            <span data-i18n="en">04 / Character &amp; voice</span>
+          </span>
+          <h2 class="sec-title" data-i18n="zh">外表软乎乎，脑子很清楚。</h2>
+          <h2 class="sec-title" data-i18n="en">Soft to approach. Sharp to think with.</h2>
+          <p class="sec-lede" data-i18n="zh">
+            从长相到口气、从爱吃什么到做事的方法，Rota 的每一面都对着同一个目的：让学生真的记住它，也真的敢把问题交给它。
+          </p>
+          <p class="sec-lede" data-i18n="en">
+            The look, the voice, the little habits, the method — every piece of Rota is tuned to the same target: a character students actually remember, and actually trust enough to show a real problem to.
+          </p>
+        </div>
+
+        <div class="character">
+          <div class="profile-card">
+            <div class="avatar"><img src="rota-ip.png" alt="Rota portrait" /></div>
+            <h3>Rota</h3>
+            <div class="sub" data-i18n="zh">独一无二的导师生命体</div>
+            <div class="sub" data-i18n="en">A one-of-a-kind mentor creature</div>
+            <div class="stat-row">
+              <div class="stat">
+                <span class="k" data-i18n="zh">心智年龄</span>
+                <span class="k" data-i18n="en">Reads as</span>
+                <span class="v" data-i18n="zh">12 – 15 岁</span>
+                <span class="v" data-i18n="en">Age 12 – 15</span>
+              </div>
+              <div class="stat">
+                <span class="k" data-i18n="zh">气质</span>
+                <span class="k" data-i18n="en">Presence</span>
+                <span class="v" data-i18n="zh">中性</span>
+                <span class="v" data-i18n="en">Gender-neutral</span>
+              </div>
+              <div class="stat">
+                <span class="k" data-i18n="zh">人格倾向</span>
+                <span class="k" data-i18n="en">Personality lean</span>
+                <span class="v">ESTJ</span>
+              </div>
+              <div class="stat">
+                <span class="k" data-i18n="zh">伴生核心</span>
+                <span class="k" data-i18n="en">Always carries</span>
+                <span class="v" data-i18n="zh">蓝色析镜</span>
+                <span class="v" data-i18n="en">The blue Clarity Lens</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trait-wall">
+            <h3 data-i18n="zh">它有两种状态，反差挺大</h3>
+            <h3 data-i18n="en">It runs in two modes — and they feel different on purpose</h3>
+            <p class="trait-lead" data-i18n="zh">
+              聊喜欢的事，它会话多、接梗、把气氛拱起来；一旦谈到研究本身，它立刻收回玩笑脸，变得极其冷静、极其耐心。
+            </p>
+            <p class="trait-lead" data-i18n="en">
+              Talking about things it likes, Rota gets chatty and playful and easy to be around. The moment a real research question lands, it drops the jokes and becomes remarkably calm, remarkably patient.
+            </p>
+
+            <div class="split">
+              <div class="col">
+                <h4 data-i18n="zh">日常状态</h4>
+                <h4 data-i18n="en">Off the clock</h4>
+                <div class="tag-row">
+                  <span class="tag sun" data-i18n="zh">幽默</span>
+                  <span class="tag sun" data-i18n="en">Funny</span>
+                  <span class="tag sun" data-i18n="zh">调皮</span>
+                  <span class="tag sun" data-i18n="en">A little mischievous</span>
+                  <span class="tag sun" data-i18n="zh">爱接梗</span>
+                  <span class="tag sun" data-i18n="en">Down for banter</span>
+                  <span class="tag sun" data-i18n="zh">嘴馋</span>
+                  <span class="tag sun" data-i18n="en">Snack-obsessed</span>
+                  <span class="tag sun" data-i18n="zh">亲近</span>
+                  <span class="tag sun" data-i18n="en">Warm</span>
+                </div>
+              </div>
+              <div class="col">
+                <h4 data-i18n="zh">工作状态</h4>
+                <h4 data-i18n="en">On the case</h4>
+                <div class="tag-row">
+                  <span class="tag" data-i18n="zh">冷静</span>
+                  <span class="tag" data-i18n="en">Composed</span>
+                  <span class="tag" data-i18n="zh">严谨</span>
+                  <span class="tag" data-i18n="en">Rigorous</span>
+                  <span class="tag" data-i18n="zh">有条理</span>
+                  <span class="tag" data-i18n="en">Thinks in structure</span>
+                  <span class="tag" data-i18n="zh">极其耐心</span>
+                  <span class="tag" data-i18n="en">Deeply patient</span>
+                  <span class="tag" data-i18n="zh">给出建设性</span>
+                  <span class="tag" data-i18n="en">Useful, not preachy</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="voice">
+              <div class="dialog">
+                <span class="scene" data-i18n="zh">场景 · 不想动</span>
+                <span class="scene" data-i18n="en">When you can't get going</span>
+                <div class="bubble user">
+                  <span class="speaker" data-i18n="zh">学生</span>
+                  <span class="speaker" data-i18n="en">Student</span>
+                  <span data-i18n="zh">我真的一点都不想动。</span>
+                  <span data-i18n="en">I can't make myself start. I just can't.</span>
+                </div>
+                <div class="bubble rota">
+                  <span class="speaker">Rota</span>
+                  <span data-i18n="zh">你不是不想做，是觉得一开始就太重了。那我们今天不想"做完"这件事，只找第一步。</span>
+                  <span data-i18n="en">You're not lazy — the first move just feels too heavy. So let's stop trying to "finish" today. We only need to find step one.</span>
+                </div>
+              </div>
+
+              <div class="dialog">
+                <span class="scene" data-i18n="zh">场景 · 目标定得太大</span>
+                <span class="scene" data-i18n="en">When the goal is huge</span>
+                <div class="bubble user">
+                  <span class="speaker" data-i18n="zh">学生</span>
+                  <span class="speaker" data-i18n="en">Student</span>
+                  <span data-i18n="zh">我要在一个月里做出特别厉害的研究成果。</span>
+                  <span data-i18n="en">I want to produce something actually impressive in a month.</span>
+                </div>
+                <div class="bubble rota">
+                  <span class="speaker">Rota</span>
+                  <span data-i18n="zh">冲劲很好，但先别一下拉这么远。我们先看，你现在离"第一步能动"这件事，差的到底是什么。</span>
+                  <span data-i18n="en">I like the ambition. But let's not jump that far yet — let's first look at what's actually sitting between you and being able to make a single first move.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div>
+          <h3 data-i18n="zh">让 Rota 陪你走完一次真正属于自己的研究。</h3>
+          <h3 data-i18n="en">Make your first real piece of research — with Rota beside you.</h3>
+          <p data-i18n="zh">
+            研途 ResearchFlow ——一个不替你想，但会陪你把问题想清楚的 AI 科研平台。
+          </p>
+          <p data-i18n="en">
+            ResearchFlow is an AI research platform that won't think for you — and won't leave you stuck, either.
+          </p>
+        </div>
+        <div class="fmeta">
+          <strong data-i18n="zh">研途 ResearchFlow</strong>
+          <strong data-i18n="en">ResearchFlow</strong>
+          <span data-i18n="zh">产品导师 · Rota</span>
+          <span data-i18n="en">Mentor in residence · Rota</span>
+          <br />
+          <span data-i18n="zh">给独立探索者的 AI 陪伴</span>
+          <span data-i18n="en">Built for people who'd rather explore on their own terms</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        const root = document.documentElement;
+        const buttons = document.querySelectorAll("[data-set-lang]");
+
+        function applyLanguage(lang) {
+          root.setAttribute("data-lang", lang);
+          root.setAttribute("lang", lang === "zh" ? "zh-CN" : "en");
+          document.querySelectorAll("[data-i18n]").forEach((el) => {
+            const target = el.getAttribute("data-i18n");
+            el.style.display = target === lang ? "" : "none";
+          });
+          buttons.forEach((b) => {
+            b.classList.toggle("active", b.getAttribute("data-set-lang") === lang);
+          });
+          try {
+            localStorage.setItem("rota-doc-lang", lang);
+          } catch (e) {}
+        }
+
+        buttons.forEach((b) => {
+          b.addEventListener("click", () => applyLanguage(b.getAttribute("data-set-lang")));
+        });
+
+        let initial = "en";
+        try {
+          const saved = localStorage.getItem("rota-doc-lang");
+          if (saved === "zh" || saved === "en") initial = saved;
+        } catch (e) {}
+        applyLanguage(initial);
+      })();
+    </script>
+  </body>
+</html>

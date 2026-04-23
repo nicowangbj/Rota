@@ -52,8 +52,10 @@ export async function POST(req: NextRequest) {
     { role: "user", content: message },
   ];
 
+  const locale = req.headers.get("x-locale") ?? "en";
+
   try {
-    const reply = await chatWithAI(strategyCode || "AI-S01", messages, context);
+    const reply = await chatWithAI(strategyCode || "AI-S01", messages, context, locale);
 
     // Save assistant message
     await prisma.message.create({
@@ -69,8 +71,10 @@ export async function POST(req: NextRequest) {
       reply,
     });
   } catch {
-    // If Gemini API fails (e.g., no API key), return a placeholder response
-    const placeholder = "我是 Rota AI 导师。当前 AI 服务还未配置，请在 .env 文件中设置 GEMINI_API_KEY。配置完成后，我会继续陪你把研究这件事讲清楚、做下去。";
+    const placeholder =
+      locale === "zh"
+        ? "我是 Rota AI 导师。当前 AI 服务还未配置，请在 .env 文件中设置 GEMINI_API_KEY。配置完成后，我会继续陪你把研究这件事讲清楚、做下去。"
+        : "I'm Rota, your AI research mentor. The AI service isn't configured yet — please set GEMINI_API_KEY in your .env file. Once configured, I'll be here to guide your research journey.";
 
     await prisma.message.create({
       data: {

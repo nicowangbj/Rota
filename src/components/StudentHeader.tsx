@@ -1,13 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 export default function StudentHeader() {
+  const t = useTranslations("studentHeader");
   const router = useRouter();
+  const locale = useLocale();
+  const pathname = usePathname();
   const [userName, setUserName] = useState("");
   const [loggingOut, setLoggingOut] = useState(false);
+
+  function switchLocale() {
+    const targetLocale = locale === "en" ? "zh" : "en";
+    const newPath = pathname.replace(`/${locale}`, `/${targetLocale}`);
+    router.push(newPath);
+  }
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -21,13 +32,13 @@ export default function StudentHeader() {
   async function handleLogout() {
     setLoggingOut(true);
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    router.push(`/${locale}/login`);
   }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/78 backdrop-blur-xl">
       <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-        <Link href="/map" className="flex items-center gap-3">
+        <Link href={`/${locale}/map`} className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl border border-border bg-white/85 rota-panel flex items-center justify-center text-base font-black text-brand-ink">
             R
           </div>
@@ -40,30 +51,37 @@ export default function StudentHeader() {
         </Link>
         <nav className="flex items-center gap-1">
           <Link
-            href="/map"
+            href={`/${locale}/map`}
             className="px-3 py-1.5 text-sm text-text-dim hover:text-accent hover:bg-accent/6 rounded-xl transition-colors"
           >
-            科研地图
+            {t("map")}
           </Link>
           <Link
-            href="/journal"
+            href={`/${locale}/journal`}
             className="px-3 py-1.5 text-sm text-text-dim hover:text-accent hover:bg-accent/6 rounded-xl transition-colors"
           >
-            科研日志
+            {t("journal")}
           </Link>
           <Link
-            href="/adjust"
+            href={`/${locale}/adjust`}
             className="px-3 py-1.5 text-sm text-text-dim hover:text-accent hover:bg-accent/6 rounded-xl transition-colors"
           >
-            调整计划
+            {t("adjust")}
           </Link>
           <Link
-            href="/profile"
+            href={`/${locale}/profile`}
             className="px-3 py-1.5 text-sm text-text-dim hover:text-accent hover:bg-accent/6 rounded-xl transition-colors"
           >
-            个人中心
+            {t("profile")}
           </Link>
           <div className="w-px h-5 bg-border mx-2" />
+          <button
+            onClick={switchLocale}
+            className="px-2.5 py-1 text-xs font-semibold text-text-muted hover:text-accent hover:bg-accent/8 rounded-lg transition-colors border border-border"
+          >
+            {locale === "en" ? "中" : "EN"}
+          </button>
+          <div className="w-px h-5 bg-border mx-1" />
           {userName && (
             <span className="text-sm text-text-muted mr-1">{userName}</span>
           )}
@@ -72,7 +90,7 @@ export default function StudentHeader() {
             disabled={loggingOut}
             className="px-3 py-1.5 text-sm text-text-muted hover:text-rose hover:bg-rose/5 rounded-lg transition-colors"
           >
-            {loggingOut ? "退出中..." : "退出"}
+            {loggingOut ? t("loggingOut") : t("logout")}
           </button>
         </nav>
       </div>

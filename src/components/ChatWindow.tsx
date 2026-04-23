@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Message {
   role: "user" | "assistant";
@@ -21,10 +22,12 @@ export default function ChatWindow({
   strategyCode,
   projectId,
   context,
-  placeholder = "输入你的回复...",
+  placeholder,
   onConversationUpdate,
   initialMessages = [],
 }: ChatWindowProps) {
+  const t = useTranslations("chat");
+  const locale = useLocale();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,7 +50,7 @@ export default function ChatWindow({
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-locale": locale },
         body: JSON.stringify({
           conversationId,
           message: userMsg,
@@ -64,7 +67,7 @@ export default function ChatWindow({
     } catch {
       setMessages([
         ...newMessages,
-        { role: "assistant", content: "抱歉，发生了网络错误。请稍后重试。" },
+        { role: "assistant", content: t("networkError") },
       ]);
     }
     setLoading(false);
@@ -94,7 +97,7 @@ export default function ChatWindow({
                       className="object-cover"
                     />
                   </span>
-                  <span className="text-xs font-semibold text-accent">Rota 导师</span>
+                  <span className="text-xs font-semibold text-accent">{t("mentorLabel")}</span>
                 </div>
               )}
               <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -116,7 +119,7 @@ export default function ChatWindow({
                     className="object-cover"
                   />
                 </span>
-                <span className="text-xs font-semibold text-accent">Rota 导师</span>
+                <span className="text-xs font-semibold text-accent">{t("mentorLabel")}</span>
               </div>
               <div className="flex gap-1.5 mt-2">
                 <span className="w-2 h-2 bg-accent/40 rounded-full animate-bounce" />
@@ -136,7 +139,7 @@ export default function ChatWindow({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send()}
-            placeholder={placeholder}
+            placeholder={placeholder ?? t("placeholder")}
             className="flex-1 px-4 py-3 bg-surface2 border border-border rounded-xl text-sm text-text placeholder-text-muted focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-colors"
             disabled={loading}
           />
@@ -145,7 +148,7 @@ export default function ChatWindow({
             disabled={loading || !input.trim()}
             className="px-6 py-3 bg-accent text-white font-semibold rounded-xl disabled:opacity-40 hover:bg-accent/90 transition-colors"
           >
-            发送
+            {t("send")}
           </button>
         </div>
       </div>
