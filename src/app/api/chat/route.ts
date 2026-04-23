@@ -70,7 +70,8 @@ export async function POST(req: NextRequest) {
       conversationId: conversation.id,
       reply,
     });
-  } catch {
+  } catch (err) {
+    console.error("Chat API error:", err);
     const placeholder =
       locale === "zh"
         ? "我是 Rota AI 导师。当前 AI 服务还未配置，请在 .env 文件中设置 GEMINI_API_KEY。配置完成后，我会继续陪你把研究这件事讲清楚、做下去。"
