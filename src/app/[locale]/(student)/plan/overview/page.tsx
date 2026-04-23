@@ -104,19 +104,6 @@ function OverviewContent() {
         </div>
       </div>
 
-      {/* AI tutor interpretation */}
-      <div className="bg-accent/5 rounded-2xl p-5 mb-8 flex gap-4">
-        <div className="shrink-0">
-          <RotaAvatar size="xxs" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-sm font-bold text-accent mb-1">{t("mentorTitle")}</h3>
-          <p className="text-sm text-text-dim leading-relaxed">
-            {t("mentorMsg", { phases: project.phases.length, weeks: totalWeeks > 0 ? totalWeeks : "..." })}
-          </p>
-        </div>
-      </div>
-
       {/* Phase timeline */}
       <h2 className="text-lg font-bold text-text mb-5">{t("phasesTitle")}</h2>
       <div className="relative pl-8 mb-8">
