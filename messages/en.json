@@ -106,6 +106,9 @@
     "tutorTitle": "Rota Research Mentor",
     "tutorStatus": "Learning about your interests and skills",
     "dialogNotes": "Conversation notes",
+    "notesEmpty": "Start chatting — your most recent points will land here so your mentor can see your interests, skills and schedule at a glance.",
+    "noteLabel": "Point {index}",
+    "notesFootnote": "Auto-captured from your last 5 messages",
     "placeholder": "Tell your mentor about things you're interested in...",
     "initialMessage": "Hi! I'm Rota, your research mentor. Before we find your topic, I'd love to learn a bit about you first — what are you interested in, or curious about?"
   },
@@ -444,6 +447,7 @@
   "chat": {
     "placeholder": "Type your reply...",
     "mentorLabel": "Rota Mentor",
-    "networkError": "Sorry, a network error occurred. Please try again later."
+    "networkError": "Sorry, a network error occurred. Please try again later.",
+    "send": "Send"
   }
 }
