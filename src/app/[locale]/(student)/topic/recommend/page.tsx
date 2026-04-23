@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import RotaAvatar from "@/components/RotaAvatar";
@@ -16,7 +16,6 @@ interface Topic {
 interface Message {
   role: "tutor" | "user" | "system";
   content: string;
-  topicIndex?: number; // links message to a topic card
 }
 
 const DEFAULT_TOPICS: Topic[] = [
@@ -57,11 +56,12 @@ function RecommendContent() {
   const [isRecording, setIsRecording] = useState(false);
   const [inputText, setInputText] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
+  const topicRefs = useRef<(HTMLDivElement | null)[]>([]);
   const backUrl = conversationId
     ? `/${locale}/topic/references?keywords=${keywords}&conversationId=${conversationId}`
     : `/${locale}/topic/references?keywords=${keywords}`;
 
-  // Conversation messages
+  // Conversation messages — only text bubbles, not tied to any topic card.
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "tutor",
@@ -70,9 +70,10 @@ function RecommendContent() {
     {
       role: "tutor",
       content: t("initialMsg2"),
-      topicIndex: 0,
     },
   ]);
+  const [chatLoading, setChatLoading] = useState(false);
+  const conversationIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,19 +106,47 @@ function RecommendContent() {
     fetchRecommendations();
   }, [keywords, refs]);
 
-  const handleSend = () => {
-    if (!inputText.trim()) return;
+  const handleSend = async () => {
+    if (!inputText.trim() || chatLoading) return;
     const userMsg = inputText.trim();
     setInputText("");
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", content: userMsg },
-      {
-        role: "tutor",
-        content: "这是个好问题！让我想想... 这个课题的核心价值在于它非常贴近你的日常生活，你可以直接在校园里开展研究。如果你感兴趣，我们可以继续深入聊聊具体怎么做，或者你想先看看其他课题？",
-      },
-    ]);
+    const updatedMessages: Message[] = [...messages, { role: "user", content: userMsg }];
+    setMessages(updatedMessages);
+    setChatLoading(true);
+
+    try {
+      const topicContext = topics.map((t, i) =>
+        `#${i + 1} ${t.name}: ${t.reason}`
+      ).join("\n");
+
+      const apiMessages = updatedMessages
+        .filter((m) => m.role !== "system")
+        .map((m) => ({
+          role: m.role === "tutor" ? "assistant" : "user",
+          content: m.content,
+        }));
+
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-locale": locale },
+        body: JSON.stringify({
+          strategyCode: "AI-S05",
+          messages: apiMessages,
+          context: topicContext,
+          conversationId: conversationIdRef.current,
+        }),
+      });
+      const data = await res.json();
+      if (data.conversationId) conversationIdRef.current = data.conversationId;
+      if (data.reply) {
+        setMessages((prev) => [...prev, { role: "tutor", content: data.reply }]);
+      }
+    } catch {
+      setMessages((prev) => [...prev, { role: "tutor", content: t("initialMsg1") }]);
+    } finally {
+      setChatLoading(false);
+    }
   };
 
   const handleVoiceToggle = () => {
@@ -132,12 +161,22 @@ function RecommendContent() {
           {
             role: "tutor",
             content: "好的！第二个课题是关于校园植被的研究。这个课题特别适合喜欢动手和户外观察的同学。来看看详情吧——",
-            topicIndex: 1,
           },
         ]);
+        if (topics[1]) {
+          setExpandedTopic(1);
+          topicRefs.current[1]?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
       }, 2000);
     }
   };
+
+  const handleFocusTopic = (i: number) => {
+    setExpandedTopic(expandedTopic === i ? null : i);
+    topicRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  const topicListRender = useMemo(() => topics, [topics]);
 
   const handleSelectTopic = (topic: Topic) => {
     router.push(
@@ -179,7 +218,7 @@ function RecommendContent() {
             {topics.map((topic, i) => (
               <button
                 key={i}
-                onClick={() => setExpandedTopic(expandedTopic === i ? null : i)}
+                onClick={() => handleFocusTopic(i)}
                 className={`w-full text-left px-3 py-2.5 rounded-xl text-xs transition-all ${
                   expandedTopic === i
                     ? "bg-accent/10 text-accent border border-accent/20"
@@ -215,35 +254,17 @@ function RecommendContent() {
 
         {/* Message stream */}
         <div className="flex-1 min-h-0 overflow-y-auto space-y-4 pb-4">
-          {messages.map((msg, i) => {
-            const topicIndex = typeof msg.topicIndex === "number" ? msg.topicIndex : null;
-            const topic = topicIndex !== null ? topics[topicIndex] : null;
-
-            return (
+          {messages.map((msg, i) => (
             <div key={i}>
               {msg.role === "tutor" && (
                 <div className="flex gap-3">
                   <div className="shrink-0 mt-1">
                     <RotaAvatar size="xxs" />
                   </div>
-                  <div className="flex-1 space-y-3">
+                  <div className="flex-1">
                     <div className="bg-white rounded-2xl rounded-tl-md border border-border px-4 py-3 max-w-[85%]">
                       <p className="text-sm text-text-dim leading-relaxed">{msg.content}</p>
                     </div>
-
-                    {/* Inline topic card */}
-                    {topicIndex !== null && topic && (
-                      <TopicCard
-                        topic={topic}
-                        index={topicIndex}
-                        expanded={expandedTopic === topicIndex}
-                        onToggle={() => setExpandedTopic(expandedTopic === topicIndex ? null : topicIndex)}
-                        onSelect={() => handleSelectTopic(topic)}
-                        whySuitable={t("whySuitable")}
-                        researchPoints={t("researchPoints")}
-                        selectLabel={t("select")}
-                      />
-                    )}
                   </div>
                 </div>
               )}
@@ -256,7 +277,30 @@ function RecommendContent() {
                 </div>
               )}
             </div>
-          )})}
+          ))}
+
+          {/* All recommended topic cards */}
+          <div className="space-y-3 pt-2">
+            {topicListRender.map((topic, i) => (
+              <div
+                key={`${i}-${topic.name}`}
+                ref={(el) => {
+                  topicRefs.current[i] = el;
+                }}
+              >
+                <TopicCard
+                  topic={topic}
+                  index={i}
+                  expanded={expandedTopic === i}
+                  onToggle={() => setExpandedTopic(expandedTopic === i ? null : i)}
+                  onSelect={() => handleSelectTopic(topic)}
+                  whySuitable={t("whySuitable")}
+                  researchPoints={t("researchPoints")}
+                  selectLabel={t("select")}
+                />
+              </div>
+            ))}
+          </div>
           <div ref={bottomRef} />
         </div>
 
