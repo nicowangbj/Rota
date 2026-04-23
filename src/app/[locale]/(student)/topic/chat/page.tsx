@@ -88,7 +88,7 @@ export default function TopicChatPage() {
       <div className="hidden lg:flex flex-col w-72 shrink-0">
         <div className="bg-white rounded-2xl border border-border p-6 text-center mb-4 rota-panel">
           <div className="flex justify-center mb-3">
-            <Image src="/rota-think.png" alt="Rota" width={120} height={120} className="object-contain" />
+            <Image src="/rota-think.png" alt="Rota" width={120} height={120} className="object-contain mix-blend-multiply" />
           </div>
           <h3 className="font-bold text-text">{t("tutorTitle")}</h3>
           <p className="text-xs text-text-muted mt-1">{t("tutorStatus")}</p>
