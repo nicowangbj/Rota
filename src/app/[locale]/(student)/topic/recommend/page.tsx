@@ -301,6 +301,18 @@ function RecommendContent() {
               </div>
             ))}
           </div>
+          {chatLoading && (
+            <div className="flex gap-3">
+              <div className="shrink-0 mt-1"><RotaAvatar size="xxs" /></div>
+              <div className="bg-white rounded-2xl rounded-tl-md border border-border px-4 py-3">
+                <div className="flex gap-1.5">
+                  <span className="w-2 h-2 bg-accent/40 rounded-full animate-bounce" />
+                  <span className="w-2 h-2 bg-accent/40 rounded-full animate-bounce [animation-delay:0.1s]" />
+                  <span className="w-2 h-2 bg-accent/40 rounded-full animate-bounce [animation-delay:0.2s]" />
+                </div>
+              </div>
+            </div>
+          )}
           <div ref={bottomRef} />
         </div>
 
@@ -352,7 +364,7 @@ function RecommendContent() {
                 />
                 <button
                   onClick={handleSend}
-                  disabled={!inputText.trim()}
+                  disabled={!inputText.trim() || chatLoading}
                   className="px-5 py-3 bg-accent text-white font-semibold rounded-xl disabled:opacity-40 hover:bg-accent/90 transition-colors"
                 >
                   {tCommon("send")}
