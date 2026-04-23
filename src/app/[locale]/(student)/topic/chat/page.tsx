@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ChatWindow from "@/components/ChatWindow";
 import RotaAvatar from "@/components/RotaAvatar";
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
 
 export default function TopicChatPage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("topicChat");
   const [conversationId, setConversationId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const handleGenerateProfile = async () => {
     if (!conversationId) return;
@@ -20,6 +26,17 @@ export default function TopicChatPage() {
   const handleQuickStart = () => {
     router.push(`/${locale}/topic/profile?quickStart=1`);
   };
+
+  const notes = useMemo(() => {
+    return messages
+      .filter((m) => m.role === "user" && m.content.trim().length > 0)
+      .slice(-5)
+      .reverse()
+      .map((m, idx) => ({
+        id: `${idx}-${m.content.slice(0, 8)}`,
+        text: m.content.trim(),
+      }));
+  }, [messages]);
 
   return (
     <div className="h-[calc(100vh-140px)] flex gap-6">
@@ -32,11 +49,39 @@ export default function TopicChatPage() {
           <h3 className="font-bold text-text">{t("tutorTitle")}</h3>
           <p className="text-xs text-text-muted mt-1">{t("tutorStatus")}</p>
         </div>
-        <div className="flex-1 bg-white rounded-2xl border border-border p-5 overflow-hidden rota-panel">
-          <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">{t("dialogNotes")}</h4>
-          <div className="img-placeholder" style={{ width: "100%", height: 200 }}>
-            <span className="spec">白板区域 · 实时记录对话关键信息 · 待设计</span>
+        <div className="flex-1 bg-white rounded-2xl border border-border p-5 overflow-hidden rota-panel flex flex-col min-h-0">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider">{t("dialogNotes")}</h4>
+            {notes.length > 0 && (
+              <span className="text-[10px] font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+                {notes.length}
+              </span>
+            )}
           </div>
+          {notes.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center text-center px-2">
+              <p className="text-xs text-text-muted leading-relaxed">
+                {t("notesEmpty")}
+              </p>
+            </div>
+          ) : (
+            <ul className="flex-1 overflow-y-auto space-y-3 pr-1 -mr-1">
+              {notes.map((note, idx) => (
+                <li
+                  key={note.id}
+                  className="relative pl-3 border-l-2 border-accent/40 text-xs text-text-dim leading-relaxed"
+                >
+                  <span className="block text-[10px] font-semibold text-accent/80 uppercase tracking-wider mb-1">
+                    {t("noteLabel", { index: notes.length - idx })}
+                  </span>
+                  <span className="line-clamp-3">{note.text}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-3 pt-3 border-t border-border/60 text-[10px] text-text-muted leading-relaxed">
+            {t("notesFootnote")}
+          </p>
         </div>
       </div>
 
@@ -62,7 +107,10 @@ export default function TopicChatPage() {
                 content: t("initialMessage"),
               },
             ]}
-            onConversationUpdate={(id) => setConversationId(id)}
+            onConversationUpdate={(id, updated) => {
+              setConversationId(id);
+              if (updated) setMessages(updated);
+            }}
           />
         </div>
 
