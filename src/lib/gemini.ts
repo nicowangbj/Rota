@@ -618,6 +618,12 @@ Output: Markdown format.`,
   return locale === "zh" ? entry.zh : entry.en;
 }
 
+function languageDirective(locale: string): string {
+  return locale === "zh"
+    ? "\n\n【语言要求】所有输出内容（包括 JSON 字段的字符串值）必须使用简体中文。"
+    : "\n\n[Language requirement] All output — including string values inside any JSON fields — must be written in natural English. Do not use Chinese characters.";
+}
+
 export async function chatWithAI(
   strategyCode: string,
   messages: { role: string; content: string }[],
@@ -627,9 +633,10 @@ export async function chatWithAI(
   const systemPrompt = await getStrategyPrompt(strategyCode, locale);
 
   const contextLabel = locale === "zh" ? "上下文信息：" : "Context:";
-  const systemInstruction = context
-    ? `${systemPrompt}\n\n${contextLabel}\n${context}`
-    : systemPrompt;
+  const systemInstruction =
+    (context
+      ? `${systemPrompt}\n\n${contextLabel}\n${context}`
+      : systemPrompt) + languageDirective(locale);
 
   const chat = ai.chats.create({
     model: DEFAULT_MODEL,
@@ -654,9 +661,10 @@ export async function generateWithAI(
   const systemPrompt = await getStrategyPrompt(strategyCode, locale);
 
   const contextLabel = locale === "zh" ? "上下文信息：" : "Context:";
-  const contents = context
+  const base = context
     ? `${systemPrompt}\n\n${contextLabel}\n${context}\n\n${input}`
     : `${systemPrompt}\n\n${input}`;
+  const contents = base + languageDirective(locale);
 
   const result = await ai.models.generateContent({
     model: DEFAULT_MODEL,
@@ -674,9 +682,10 @@ export async function streamChatWithAI(
   const systemPrompt = await getStrategyPrompt(strategyCode, locale);
 
   const contextLabel = locale === "zh" ? "上下文信息：" : "Context:";
-  const systemInstruction = context
-    ? `${systemPrompt}\n\n${contextLabel}\n${context}`
-    : systemPrompt;
+  const systemInstruction =
+    (context
+      ? `${systemPrompt}\n\n${contextLabel}\n${context}`
+      : systemPrompt) + languageDirective(locale);
 
   const chat = ai.chats.create({
     model: DEFAULT_MODEL,

@@ -62,22 +62,48 @@ function RecommendContent() {
     : `/${locale}/topic/references?keywords=${keywords}`;
 
   // Conversation messages — only text bubbles, not tied to any topic card.
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "tutor",
-      content: t("initialMsg1"),
-    },
-    {
-      role: "tutor",
-      content: t("initialMsg2"),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [tutorTyping, setTutorTyping] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const conversationIdRef = useRef<string | null>(null);
+  const initialStagedRef = useRef(false);
+
+  // Push a tutor message after showing a typing indicator for `thinkingMs`.
+  const pushTutorStaged = (content: string, thinkingMs = 900) => {
+    setTutorTyping(true);
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        setMessages((prev) => [...prev, { role: "tutor", content }]);
+        setTutorTyping(false);
+        resolve();
+      }, thinkingMs);
+    });
+  };
+
+  // Stagger the two opening tutor messages so the conversation feels live.
+  useEffect(() => {
+    if (initialStagedRef.current) return;
+    initialStagedRef.current = true;
+
+    let cancelled = false;
+    (async () => {
+      await new Promise((r) => setTimeout(r, 400));
+      if (cancelled) return;
+      await pushTutorStaged(t("initialMsg1"), 800);
+      if (cancelled) return;
+      await new Promise((r) => setTimeout(r, 500));
+      if (cancelled) return;
+      await pushTutorStaged(t("initialMsg2"), 1100);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [t]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, tutorTyping]);
 
   useEffect(() => {
     if (!keywords && !refs) return;
@@ -114,6 +140,7 @@ function RecommendContent() {
     const updatedMessages: Message[] = [...messages, { role: "user", content: userMsg }];
     setMessages(updatedMessages);
     setChatLoading(true);
+    setTutorTyping(true);
 
     try {
       const topicContext = topics.map((t, i) =>
@@ -145,6 +172,7 @@ function RecommendContent() {
     } catch {
       setMessages((prev) => [...prev, { role: "tutor", content: t("initialMsg1") }]);
     } finally {
+      setTutorTyping(false);
       setChatLoading(false);
     }
   };
@@ -153,16 +181,14 @@ function RecommendContent() {
     setIsRecording(!isRecording);
     if (!isRecording) {
       // Simulate voice recording start
-      setTimeout(() => {
+      setTimeout(async () => {
         setIsRecording(false);
         setMessages((prev) => [
           ...prev,
-          { role: "user", content: "（语音消息）我想了解一下第二个课题" },
-          {
-            role: "tutor",
-            content: "好的！第二个课题是关于校园植被的研究。这个课题特别适合喜欢动手和户外观察的同学。来看看详情吧——",
-          },
+          { role: "user", content: t("voiceMockUser") },
         ]);
+        await new Promise((r) => setTimeout(r, 400));
+        await pushTutorStaged(t("voiceMockReply"), 900);
         if (topics[1]) {
           setExpandedTopic(1);
           topicRefs.current[1]?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -301,7 +327,7 @@ function RecommendContent() {
               </div>
             ))}
           </div>
-          {chatLoading && (
+          {(chatLoading || tutorTyping) && (
             <div className="flex gap-3">
               <div className="shrink-0 mt-1"><RotaAvatar size="xxs" /></div>
               <div className="bg-white rounded-2xl rounded-tl-md border border-border px-4 py-3">
