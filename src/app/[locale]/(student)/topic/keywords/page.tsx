@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { getTopicDraft, saveTopicDraft } from "@/lib/topic-draft";
 
 interface Keyword {
   word: string;
@@ -55,7 +56,14 @@ function KeywordsContent() {
     "Humanities": t("catHumanities"),
   };
 
+  // Restore from draft on mount.
   useEffect(() => {
+    const draft = getTopicDraft();
+    if (draft?.keywords?.length) {
+      setKeywords(draft.keywords);
+      setSelected(new Set(draft.selectedKeywords));
+      return;
+    }
     if (!conversationId) return;
     async function fetchKeywords() {
       setLoading(true);
@@ -75,6 +83,7 @@ function KeywordsContent() {
           const parsed = JSON.parse(jsonMatch[0]);
           if (Array.isArray(parsed.keywords) && parsed.keywords.length > 0) {
             setKeywords(parsed.keywords);
+            saveTopicDraft({ keywords: parsed.keywords });
           }
         }
       } catch {
@@ -83,6 +92,7 @@ function KeywordsContent() {
       setLoading(false);
     }
     fetchKeywords();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
   const toggle = (word: string) => {
@@ -90,6 +100,7 @@ function KeywordsContent() {
     if (next.has(word)) next.delete(word);
     else next.add(word);
     setSelected(next);
+    saveTopicDraft({ selectedKeywords: [...next] });
   };
 
   const categories = [...new Set(keywords.map((k) => k.category))];
@@ -185,7 +196,10 @@ function KeywordsContent() {
 
       <div className="mt-8">
         <button
-          onClick={() => router.push(referencesUrl)}
+          onClick={() => {
+            saveTopicDraft({ step: "references", selectedKeywords: [...selected] });
+            router.push(referencesUrl);
+          }}
           disabled={selected.size === 0}
           className="w-full py-3.5 bg-accent hover:bg-accent/90 text-white font-semibold rounded-xl disabled:opacity-40 transition-colors shadow-lg shadow-accent/20"
         >

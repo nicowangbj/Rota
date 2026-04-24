@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { getTopicDraft, saveTopicDraft } from "@/lib/topic-draft";
 
 interface Reference {
   title: string;
@@ -51,7 +52,14 @@ function ReferencesContent() {
     ? `/${locale}/topic/keywords?conversationId=${conversationId}`
     : `/${locale}/topic/keywords`;
 
+  // Restore from draft on mount.
   useEffect(() => {
+    const draft = getTopicDraft();
+    if (draft?.references?.length) {
+      setReferences(draft.references);
+      setSelected(new Set(draft.selectedRefs));
+      return;
+    }
     if (!keywords) return;
     async function fetchReferences() {
       setLoading(true);
@@ -70,6 +78,7 @@ function ReferencesContent() {
           const parsed = JSON.parse(jsonMatch[0]);
           if (Array.isArray(parsed.references) && parsed.references.length > 0) {
             setReferences(parsed.references);
+            saveTopicDraft({ references: parsed.references });
           }
         }
       } catch {
@@ -78,6 +87,7 @@ function ReferencesContent() {
       setLoading(false);
     }
     fetchReferences();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywords]);
 
   const toggle = (index: number) => {
@@ -85,6 +95,7 @@ function ReferencesContent() {
     if (next.has(index)) next.delete(index);
     else next.add(index);
     setSelected(next);
+    saveTopicDraft({ selectedRefs: [...next] });
   };
 
   if (loading) {
@@ -166,7 +177,10 @@ function ReferencesContent() {
 
       <div className="mt-8">
         <button
-          onClick={() => router.push(recommendUrl)}
+          onClick={() => {
+            saveTopicDraft({ step: "recommend", selectedRefs: [...selected] });
+            router.push(recommendUrl);
+          }}
           className="w-full py-3.5 bg-accent hover:bg-accent/90 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-accent/20"
         >
           {t("continue")}

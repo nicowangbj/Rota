@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { getTopicDraft, saveTopicDraft, clearTopicDraft } from "@/lib/topic-draft";
 
 function ConfirmContent() {
   const router = useRouter();
@@ -11,14 +12,20 @@ function ConfirmContent() {
   const t = useTranslations("topicConfirm");
   const tCommon = useTranslations("common");
 
-  const [name, setName] = useState(searchParams.get("name") || "");
-  const [field, setField] = useState("");
-  const [description, setDescription] = useState("");
-  const [outputFormat, setOutputFormat] = useState(searchParams.get("output") || t("outputReport"));
-  const [duration, setDuration] = useState(searchParams.get("duration") || t("duration12"));
-  const [weeklyHours, setWeeklyHours] = useState(t("hours5"));
+  const draft = typeof window !== "undefined" ? getTopicDraft() : null;
+  const [name, setName] = useState(searchParams.get("name") || draft?.confirmForm.name || "");
+  const [field, setField] = useState(draft?.confirmForm.field || "");
+  const [description, setDescription] = useState(draft?.confirmForm.description || "");
+  const [outputFormat, setOutputFormat] = useState(searchParams.get("output") || draft?.confirmForm.outputFormat || t("outputReport"));
+  const [duration, setDuration] = useState(searchParams.get("duration") || draft?.confirmForm.duration || t("duration12"));
+  const [weeklyHours, setWeeklyHours] = useState(draft?.confirmForm.weeklyHours || t("hours5"));
   const [submitting, setSubmitting] = useState(false);
   const path = searchParams.get("path") || "no_topic";
+
+  // Persist form changes to draft.
+  useEffect(() => {
+    saveTopicDraft({ confirmForm: { name, field, description, outputFormat, duration, weeklyHours } });
+  }, [name, field, description, outputFormat, duration, weeklyHours]);
 
   const handleConfirm = async () => {
     if (!name.trim()) return;
@@ -39,6 +46,7 @@ function ConfirmContent() {
     });
 
     const project = await res.json();
+    clearTopicDraft();
     router.push(`/${locale}/plan/overview?projectId=${project.id}`);
   };
 

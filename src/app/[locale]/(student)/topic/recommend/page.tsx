@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import RotaAvatar from "@/components/RotaAvatar";
+import { saveTopicDraft } from "@/lib/topic-draft";
 
 interface Topic {
   name: string;
@@ -205,6 +206,12 @@ function RecommendContent() {
   const topicListRender = useMemo(() => topics, [topics]);
 
   const handleSelectTopic = (topic: Topic) => {
+    saveTopicDraft({
+      step: "confirm",
+      topicName: topic.name,
+      topicOutput: topic.outputFormat,
+      topicDuration: topic.estimatedDuration,
+    });
     router.push(
       `/${locale}/topic/confirm?name=${encodeURIComponent(topic.name)}&output=${encodeURIComponent(topic.outputFormat)}&duration=${encodeURIComponent(topic.estimatedDuration)}`
     );

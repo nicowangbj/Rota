@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ChatWindow from "@/components/ChatWindow";
 import RotaAvatar from "@/components/RotaAvatar";
+import { getTopicDraft, saveTopicDraft } from "@/lib/topic-draft";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -29,8 +30,30 @@ export default function TopicChatPage() {
   const lastSignatureRef = useRef<string>("");
   const abortRef = useRef<AbortController | null>(null);
 
+  // Auto-resume: if there's a draft in progress, jump to where the user left off.
+  useEffect(() => {
+    const draft = getTopicDraft();
+    if (!draft || draft.step === "chat") return;
+    const cid = draft.conversationId ?? "";
+    const kw = draft.selectedKeywords.join(",");
+    const rf = encodeURIComponent(
+      draft.selectedRefs.map((i) => draft.references[i]?.title ?? "").filter(Boolean).join(",")
+    );
+    const urls: Record<string, string> = {
+      profile: `/${locale}/topic/profile?conversationId=${cid}`,
+      keywords: `/${locale}/topic/keywords?conversationId=${cid}`,
+      references: `/${locale}/topic/references?keywords=${kw}&conversationId=${cid}`,
+      recommend: `/${locale}/topic/recommend?keywords=${kw}&refs=${rf}&conversationId=${cid}`,
+      confirm: `/${locale}/topic/confirm?name=${encodeURIComponent(draft.topicName)}&output=${encodeURIComponent(draft.topicOutput)}&duration=${encodeURIComponent(draft.topicDuration)}`,
+    };
+    const url = urls[draft.step];
+    if (url) router.replace(url);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleGenerateProfile = async () => {
     if (!conversationId) return;
+    saveTopicDraft({ step: "profile", conversationId });
     router.push(`/${locale}/topic/profile?conversationId=${conversationId}`);
   };
 
